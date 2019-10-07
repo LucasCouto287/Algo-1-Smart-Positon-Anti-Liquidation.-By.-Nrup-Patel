@@ -1,7 +1,7 @@
 # Anti-Liquidation-Tool-and-Position-Size-Calculator-Assets
 Anti-Liquidation Tool and Position Size Calculator For Crypto Alog trading. Hedge fund trading. 
 
-
+Check JPG AND PNG files to get a glimps of the product. Click download on the right hand side to view entire picture.
 Does not have main files to protect personal property. Please contact me for information regards to viewing.
 
 October 8, 2019?
