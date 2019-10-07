@@ -8,4 +8,8 @@ October 8, 2019?
 Mark 1 BTC Swaps and Futures ,, Liqiudation yet to come: LISTED, DELETED, AND UPADATED.
 
 October, 10, 2019
-Mark 1 BTC Swaps and Futures ,, Liqiudation yet to come: LISTED,
+Mark 1 BTC Swaps and Futures ,, Liqiudation yet to come: LISTED, Done.
+---Final Page----
+
+Btc Liqiudation - Listed, Done. 
+--- Final Page ---
