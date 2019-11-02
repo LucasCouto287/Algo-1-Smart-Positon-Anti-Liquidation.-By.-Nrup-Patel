@@ -15,4 +15,5 @@ Btc Liqiudation - Listed, Done.
 --- Final Page ---
 
 
-Future integrations would be going for more blockchain assets.
+Future integrations would be going for more blockchain assets. 
+2019-11-02
