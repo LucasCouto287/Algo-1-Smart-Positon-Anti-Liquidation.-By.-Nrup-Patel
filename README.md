@@ -13,3 +13,6 @@ Mark 1 BTC Swaps and Futures ,, Liqiudation yet to come: LISTED, Done.
 
 Btc Liqiudation - Listed, Done. 
 --- Final Page ---
+
+
+Future integrations would be going for more blockchain assets.
