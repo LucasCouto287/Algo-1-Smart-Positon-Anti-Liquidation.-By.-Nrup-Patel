@@ -15,3 +15,39 @@ let tabsMain = {
     "Traders": document.getElementById('tab-Traders'),
 };
 
+
+let event = new CustomEvent("change");
+
+function query(data)
+{
+    let query = [];
+
+    Object.keys(data).map( (key) =>
+    {
+        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    } );
+
+    return query.join('&');
+}
+
+let tabs = {
+    "XbtUsd": XbtUsd,
+    
+    "XbtUsdLiq": XbtUsdLiq,
+  
+};
+
+let menuList = [
+    {
+        name: "BTC S and F",
+        link: "XbtUsd",
+        el: undefined
+    },
+    {
+  
+        name: "BTC Liquidation",
+        link: "XbtUsdLiq",
+        el: undefined
+    },
+ 
+];
