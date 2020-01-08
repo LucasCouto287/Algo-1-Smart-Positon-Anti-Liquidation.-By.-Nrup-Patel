@@ -270,3 +270,141 @@ function makeInput(icon, name, tooltip = "")
 
         input.dispatchEvent(event);
     };
+
+    append.appendChild(btn_up);
+    append.appendChild(btn_down);
+
+    group.appendChild(prepend);
+    group.appendChild(input);
+    group.appendChild(append);
+
+    node.appendChild(label);
+    node.appendChild(group);
+
+    node.val = function (v  = null)
+    {
+        if(v)
+        {
+            input.value = v;
+            input.dispatchEvent(event);
+        }
+        else {
+            if(input.value)
+            {
+                if(Number(input.value) === input.value && input.value % 1 !== 0)
+                    return parseInt(input.value);
+                else return parseFloat(input.value);
+            }
+            else return undefined;
+
+        }
+
+        return node;
+    };
+
+    node.input = function ()
+    {
+        return input;
+    };
+
+    return node;
+}
+
+function makeDate(icon, name, tooltip = "")
+{
+    let node = document.createElement('div');
+    node.className = "input-row";
+
+    let label = document.createElement('label');
+    label.innerHTML = name;
+
+    let group = document.createElement('div');
+    group.className = "input-group input-group-sm";
+
+    let prepend = document.createElement('div');
+    prepend.className = "input-group-prepend";
+    prepend.innerHTML = `<div class="input-group-text"><i class="fa-fw ${icon}"></i></div>`;
+
+    if(tooltip)
+    {
+        let icon = document.createElement('i');
+        icon.className = "fa fa-question-circle ml-1";
+        icon.setAttribute("title", tooltip);
+
+        label.appendChild(icon);
+    }
+
+    let input = document.createElement('input');
+    input.className = "form-control";
+    input.placeholder = name;
+    input.onkeypress = function(evt)
+    {
+        let charCode = (evt.which) ? evt.which : event.keyCode;
+
+        let can = !(charCode > 31 && (charCode < 48 || charCode > 57));
+
+        if(charCode === 46)
+            can = true;
+
+        return can;
+    };
+
+    group.appendChild(prepend);
+    group.appendChild(input);
+
+    node.appendChild(label);
+    node.appendChild(group);
+
+    flatpickr(input, {
+        onChange: function(selectedDates, dateStr, instance) {
+            input.dispatchEvent(event);
+        }
+    });
+
+    node.val = function (v  = null)
+    {
+        if(v)
+        {
+            input.value = v;
+            input.dispatchEvent(event);
+        }
+        else {
+            let m = Math.abs(new Date() - new Date(input.value));
+
+            return Math.floor(m / (24*60*60*1000) ) + 1
+        }
+
+        return node;
+    };
+
+    node.input = function ()
+    {
+        return input;
+    };
+
+    return node;
+}
+
+function staticInput(icon, name, tooltip = "")
+{
+    let node = document.createElement('div');
+    node.className = "input-row";
+
+    let label = document.createElement('label');
+    label.innerHTML = name;
+
+    let group = document.createElement('div');
+    group.className = "input-group input-group-sm";
+
+    let prepend = document.createElement('div');
+    prepend.className = "input-group-prepend";
+    prepend.innerHTML = `<div class="input-group-text"><i class="fa-fw ${icon}"></i></div>`;
+
+    if(tooltip)
+    {
+        let icon = document.createElement('i');
+        icon.className = "fa fa-question-circle ml-1";
+        icon.setAttribute("title", tooltip);
+
+        label.appendChild(icon);
+    }
