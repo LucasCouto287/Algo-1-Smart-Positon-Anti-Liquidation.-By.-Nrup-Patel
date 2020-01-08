@@ -514,3 +514,239 @@ function slider(name)
 
     return node;
 }
+
+function makeResultRow(data)
+{
+    let node = document.createElement('div');
+    node.className = "table-row";
+    node.binds = {};
+    node.eval = data.eval;
+
+    let value = 0;
+
+    let label = document.createElement('span');
+    label.innerHTML = data["name"] + ":";
+
+    if(data["tooltip"])
+    {
+        let icon = document.createElement('i');
+        icon.className = "fa fa-question-circle ml-1";
+        icon.setAttribute("title", data["tooltip"]);
+
+        label.appendChild(icon);
+    }
+
+    let event = new CustomEvent("change");
+
+    let result = document.createElement('span');
+    let result2 = document.createElement('span');
+
+    node.appendChild(label);
+    node.appendChild(result);
+
+    node.val = function (v, v2 = undefined)
+    {
+        if(v !== undefined && v2 === undefined)
+        {
+            value = v;
+
+            if(Number(value) === value && value % 1 !== 0)
+                value = value.toFixed( data['fix'] !== undefined ? data['fix'] : 2 );
+
+            result.innerHTML = value;
+
+            if(data["append"] === "$") result.innerHTML = `<small>$</small>${value}`;
+            if(data["append"] === "BTC") result.innerHTML = `${value} <small>BTC</small>`;
+            if(data["append"] === "%") result.innerHTML = `${value}<small>%</small>`;
+
+            node.dispatchEvent(event);
+        }
+        else if(v !== undefined && v2 !== undefined)
+        {
+            value = [v, v2];
+
+            if(Number(value[0]) === value[0] && value[0] % 1 !== 0)
+                value[0] = value[0].toFixed( data['fix'] !== undefined ? data['fix'] : 2 );
+
+            if(Number(value[1]) === value[1] && value[1] % 1 !== 0)
+                value[1] = value[1].toFixed( data['fix'] !== undefined ? data['fix'] : 2 );
+
+            result.innerHTML = value[0];
+            result2.innerHTML = value[1];
+
+            if(value[1])
+            {
+                if(data["append"] === "$") result2.innerHTML = `<small>$</small>${value[1]}`;
+                if(data["append"] === "BTC") result2.innerHTML = `${value[1]} <small>BTC</small>`;
+                if(data["append"] === "%") result2.innerHTML = `${value[1]}<small>%</small>`;
+            }
+
+            if(value[0])
+            {
+                if(data["append"] === "$") result.innerHTML = `<small>$</small>${value[0]}`;
+                if(data["append"] === "BTC") result.innerHTML = `${value[0]} <small>BTC</small>`;
+                if(data["append"] === "%") result.innerHTML = `${value[0]}<small>%</small>`;
+            }
+
+            node.dispatchEvent(event);
+        }
+        else return value;
+
+        return node;
+    };
+
+    if(typeof data["eval"] !== "function")
+    {
+        if(data["twoCol"])
+        {
+            node.appendChild(result2);
+            value = [0, 0];
+            node.val(0, 0);
+        }
+        else node.val(0);
+    }
+
+    if(data["inner"])
+        node.val(data["inner"]);
+
+    node.calc = function (data)
+    {
+        Object.keys(data).map( (k) =>
+        {
+            let input = data[k].input ? data[k].input() : data[k];
+
+            if(k.substr(0, 2) !== "a.")
+                input.addEventListener("change", m, false);
+
+            function m()
+            {
+                let can = true;
+                let evl = node.eval;
+
+                if(typeof evl === "function")
+                {
+                    value = evl(data).replace(`<small>$</small>`, '');
+                    result.innerHTML = evl(data);
+                    node.dispatchEvent(event);
+                }
+                else if(typeof evl !== "string")
+                {
+                    let e = evl["long"] && typeof evl["long"] !== "function" ? evl["long"] : '';
+                    let e2 = evl["short"] && typeof evl["short"] !== "function" ? evl["short"] : '';
+
+                    Object.keys(data).map( (key) =>
+                    {
+                        let s = data[key].val ? data[key].val() : data[key];
+
+                        if(key.substr(0, 3) === "rl.")
+                            s = data[key].val()[0];
+
+                        if(key.substr(0, 3) === "rs.")
+                            s = data[key].val()[1];
+
+                        if(e) e = e.replace(new RegExp(key, 'g'), s);
+                        if(e2) e2 = e2.replace(new RegExp(key, 'g'), s);
+
+                        if(s === undefined)
+                            can = false;
+                    } );
+
+                    if(can)
+                    {
+                        if(e) e = math.eval(e);
+                        if(e2) e2 = math.eval(e2);
+
+                        if(e !== e/0 && !isNaN(e) && e2 !== e2/0 && !isNaN(e2))
+                            node.val(e, e2);
+
+                        if(evl["long_minZero"] && e < 0)
+                        {
+                            result.innerHTML = "0";
+                            node.val(0, 0);
+                        }
+                        if(evl["short_minZero"] && e2 < 0)
+                        {
+                            result2.innerHTML = "0";
+                            node.val(0, 0);
+                        }
+
+                        if(evl["long_maxZero"] && e > 0)
+                        {
+                            result.innerHTML = "0";
+                            node.val(0, 0);
+                        }
+                        if(evl["short_maxZero"] && e2 > 0)
+                        {
+                            result2.innerHTML = "0";
+                            node.val(0, 0);
+                        }
+
+                        if(evl["short_inner"]) result2.innerHTML = evl["short_inner"];
+                        if(evl["long_inner"]) result.innerHTML = evl["long_inner"];
+
+                        if(typeof evl["short"] === "function")
+                        {
+                            value[1] = evl["short"](data);
+                            result2.innerHTML = evl["short"](data);
+                            node.dispatchEvent(event);
+                        }
+
+                        if(typeof evl["long"] === "function")
+                        {
+                            value[0] = evl["long"](data);
+                            result.innerHTML = evl["long"](data);
+                            node.dispatchEvent(event);
+                        }
+                    }
+                }
+                else
+                {
+                    let e = evl;
+
+                    Object.keys(data).map( (key) =>
+                    {
+                        e = e.replace(new RegExp(key, 'g'), data[key].val());
+
+                        if(data[key].val() === undefined)
+                            can = false;
+                    } );
+
+                    if(can)
+                    {
+                        e = math.eval(e);
+
+                        if(e !== e/0 && !isNaN(e))
+                            node.val(e);
+                    }
+                }
+            }
+        } );
+    };
+
+    node.inputs = function (arg)
+    {
+        node.binds = arg;
+        node.calc(node.binds);
+    };
+
+    return node;
+}
+
+// -------------------------------------------------
+
+function XbtUsd()
+{
+    tabsMain['BitMEX'].active();
+
+    row1.classList.remove('d-none');
+    row2.classList.remove('d-none');
+    row3.classList.remove('d-none');
+
+    let i = {
+        BTC_Price: makeInput("fa fa-usd", "Bitcoin Price $", ""),
+        Capital: makeInput("fa fa-btc", "Capital ", ""),
+        Risk_Amount: makeInput("fa fa-percent", "Risk Amount %"),
+        Distance_to_Stop: makeInput("fa fa-usd", "Distance to Stop $", ""),
+        Distance_to_Target: makeInput("fa fa-usd", "Distance to Target $", ""),
+        Entry_Price: makeInput("fa fa-usd", "Entry Price $", "")
+    };
