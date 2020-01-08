@@ -408,3 +408,109 @@ function staticInput(icon, name, tooltip = "")
 
         label.appendChild(icon);
     }
+
+    let input = document.createElement('input');
+    input.className = "form-control";
+    input.setAttribute("readonly", "true");
+    input.placeholder = name;
+    input.onkeypress = function(evt)
+    {
+        let charCode = (evt.which) ? evt.which : event.keyCode;
+
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    };
+
+    group.appendChild(prepend);
+    group.appendChild(input);
+
+    node.appendChild(label);
+    node.appendChild(group);
+
+    node.val = function (v  = null)
+    {
+        if(v)
+        {
+            input.value = v;
+            input.dispatchEvent(event);
+        }
+        else return parseInt(input.value);
+
+        return node;
+    };
+
+    node.input = function ()
+    {
+        return input;
+    };
+
+    return node;
+}
+
+function slider(name)
+{
+    let value = 0;
+
+    let node = document.createElement('div');
+    node.className = "input-row select-group";
+
+    let label = document.createElement('label');
+    label.innerHTML = name;
+
+    let row = document.createElement('div');
+    row.className = "select-row";
+
+    let res = document.createElement('span');
+
+    let slider = document.createElement('input');
+    slider.type = "range";
+    slider.min = "1";
+    slider.max = "100";
+    slider.onchange = function ()
+    {
+        node.val(slider.value);
+    };
+
+    let listener = function()
+    {
+        window.requestAnimationFrame(function() {res.innerHTML = slider.value});
+    };
+
+    slider.addEventListener("mousedown", function()
+    {
+        listener();
+        slider.addEventListener("mousemove", listener);
+    });
+    slider.addEventListener("mouseup", function()
+    {
+        slider.removeEventListener("mousemove", listener);
+    });
+
+    row.appendChild(slider);
+    row.appendChild(res);
+
+    node.val = function (v  = null)
+    {
+        if(v)
+        {
+            value = v;
+            slider.value = v;
+
+            res.innerHTML = value;
+
+            node.dispatchEvent(event);
+        }
+        else {
+            if(value) return value;
+            else return undefined;
+        }
+
+        return node;
+    };
+
+    node.appendChild(label);
+    node.appendChild(row);
+
+    node.val(1);
+
+    return node;
+}
