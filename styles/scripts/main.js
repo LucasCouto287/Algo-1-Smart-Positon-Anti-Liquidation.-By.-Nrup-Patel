@@ -80,3 +80,30 @@ tabsMain['Deribit'].active = function()
     document.getElementById('tab-body-Guide').classList.remove('d-block');
     document.getElementById('tab-body-Traders').classList.remove('d-block');
 };
+tabsMain['Guide'].active = function()
+{
+    document.getElementById('tab-body-Main').classList.remove('d-block');
+    document.getElementById('tab-body-Guide').classList.add('d-block');
+    document.getElementById('tab-body-Traders').classList.remove('d-block');
+
+    tabsMain['BitMEX'].classList.remove('active');
+    tabsMain['Deribit'].classList.remove('active');
+    tabsMain['Guide'].classList.add('active');
+    tabsMain['Traders'].classList.remove('active');
+};
+tabsMain['Traders'].active = function()
+{
+    document.getElementById('tab-body-Main').classList.remove('d-block');
+    document.getElementById('tab-body-Guide').classList.remove('d-block');
+    document.getElementById('tab-body-Traders').classList.add('d-block');
+
+    tabsMain['BitMEX'].classList.remove('active');
+    tabsMain['Deribit'].classList.remove('active');
+    tabsMain['Guide'].classList.remove('active');
+    tabsMain['Traders'].classList.add('active');
+};
+
+Object.keys(tabsMain).map( (k) =>
+{
+    tabsMain[k].onclick = tabsMain[k].active;
+} );
