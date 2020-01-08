@@ -1001,3 +1001,318 @@ function EthUsd()
             tooltip: ""
         })
     };
+
+    r["ETHUSD_Swap_Contract_BTC"].inputs({
+        "i.ETH_Price": i["ETH_Price"]
+    });
+    r["ETHUSD_Swap_Contract_USD"].inputs({
+        "i.BTC_Price": i["BTC_Price"],
+        "r.ETHUSD_Swap_Contract_BTC": r["ETHUSD_Swap_Contract_BTC"]
+    });
+    r["Capital"].inputs({
+        "i.Capital": i["Capital"],
+        "i.BTC_Price": i["BTC_Price"]
+    });
+    r["Position_Size_Contracts"].inputs({
+        "r.Risk_Amount_USD": r["Risk_Amount_USD"],
+        "r.ETHUSD_Swap_Contract_USD": r["ETHUSD_Swap_Contract_USD"],
+        "r.Margin": r["Margin"]
+    });
+    r["Position_Size"].inputs({
+        "r.Risk_Amount_USD": r["Risk_Amount_USD"],
+        "r.Margin": r["Margin"]
+    });
+    r["Risk_Amount_USD"].inputs({
+        "r.Capital": r["Capital"],
+        "i.Risk_Amount": i["Risk_Amount"]
+    });
+    r["Risk_Amount_BTC"].inputs({
+        "i.Capital": i["Capital"],
+        "i.Risk_Amount": i["Risk_Amount"]
+    });
+    r["Margin"].inputs({
+        "i.Distance_to_Stop": i["Distance_to_Stop"],
+        "i.Entry_Price": i["Entry_Price"]
+    });
+    r["Leverage"].inputs({
+        "r.Position_Size": r["Position_Size"],
+        "r.Risk_Amount_USD": r["Risk_Amount_USD"]
+    });
+    r["Long_Stop"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Stop": i["Distance_to_Stop"]
+    });
+    r["Short_Stop"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Stop": i["Distance_to_Stop"]
+    });
+    r["Distance_to_Target"].inputs({
+        "i.Distance_to_Target": i["Distance_to_Target"],
+        "i.Entry_Price": i["Entry_Price"]
+    });
+    r["Long_Target"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Target": i["Distance_to_Target"]
+    });
+    r["Short_Target"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Target": i["Distance_to_Target"]
+    });
+    r["Return_Risk"].inputs({
+        "i.Distance_to_Target": i["Distance_to_Target"],
+        "i.Distance_to_Stop": i["Distance_to_Stop"]
+    });
+
+    let enter_block = new Block("Enter Data", "");
+    enter_block.className += " enter_data";
+
+    let result_block = new Block("Result", "");
+    result_block.className += " result";
+
+    Object.keys(r).map( (k) =>
+    {
+        result_block.add(r[k])
+    } );
+
+    Object.keys(i).map( (k) =>
+    {
+        enter_block.add(i[k]);
+    } );
+
+    row1.appendChild( enter_block );
+    row2.appendChild( result_block );
+
+
+
+    $.get('https://data.messari.io/api/v1/assets/btc/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["BTC_Price"].val( price.toFixed(0) );
+    });
+
+    $.get('https://data.messari.io/api/v1/assets/eth/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["ETH_Price"].val( price.toFixed(0) );
+    });
+
+    tippy('[title]');
+}
+
+function Ethf()
+{
+    tabsMain['BitMEX'].active();
+
+    row1.classList.remove('d-none');
+    row2.classList.remove('d-none');
+    row3.classList.remove('d-none');
+
+    let i = {
+        ETHBTC_Price: makeInput("fa fa-usd", "ETHBTC Price", ""),
+        ETH_Price: makeInput("fa fa-usd", "Ethereum Price", ""),
+        BTC_Price: makeInput("fa fa-usd", "Bitcoin Price", ""),
+        Capital: makeInput("fa fa-btc", "Capital", ""),
+        Risk_Amount: makeInput("fa fa-percent", "Risk Amount", ""),
+        Distance_to_Stop: makeInput("fa fa-btc", "Distance to Stop", ""),
+        Distance_to_Target: makeInput("fa fa-btc", "Distance to Target", ""),
+        Entry_Price: makeInput("fa fa-btc", "Entry Price", "")
+    };
+
+    let r = {
+        Capital: makeResultRow({
+            name: "Capital",
+            append: "$",
+            eval: "i.Capital * i.BTC_Price"
+        }),
+        Position_Size_ETH: makeResultRow({
+            name: "Position Size (ETH)",
+            fix: 0,
+            eval: "((r.Risk_Amount_USD / r.Margin) / i.ETH_Price) * 100",
+            tooltip: ""
+        }),
+        Position_Size: makeResultRow({
+            name: "Position Size",
+            append: "$",
+            fix: 0,
+            eval: "(r.Risk_Amount_USD / r.Margin) * 100"
+        }),
+        Risk_Amount_USD: makeResultRow({
+            name: "Risk Amount (USD)",
+            append: "$",
+            fix: 0,
+            eval: "(r.Capital / 100) * i.Risk_Amount",
+            tooltip: ""
+        }),
+        Risk_Amount_BTC: makeResultRow({
+            name: "Risk Amount (BTC)",
+            append: "BTC",
+            fix: 3,
+            eval: "(i.Capital / 100) * i.Risk_Amount"
+        }),
+        Margin: makeResultRow({
+            name: "Margin",
+            append: "%",
+            eval: "(i.Distance_to_Stop / i.Entry_Price) * 100",
+        }),
+        Leverage: makeResultRow({
+            name: "Leverage",
+            append: "",
+            eval: "r.Position_Size / r.Risk_Amount_USD",
+            tooltip: ""
+        }),
+        Long_Stop: makeResultRow({
+            name: "Long Stop",
+            append: "BTC",
+            fix: 5,
+            eval: "i.Entry_Price - i.Distance_to_Stop"
+        }),
+        Short_Stop: makeResultRow({
+            name: "Short Stop",
+            append: "BTC",
+            fix: 5,
+            eval: "i.Entry_Price + i.Distance_to_Stop"
+        }),
+        Distance_to_Target: makeResultRow({
+            name: "Distance to Target",
+            append: "%",
+            eval: "(i.Distance_to_Target / i.Entry_Price) * 100"
+        }),
+        Long_Target: makeResultRow({
+            name: "Long Target",
+            append: "BTC",
+            fix: 5,
+            eval: "i.Entry_Price + i.Distance_to_Target"
+        }),
+        Short_Target: makeResultRow({
+            name: "Short Target",
+            append: "BTC",
+            fix: 5,
+            eval: "i.Entry_Price - i.Distance_to_Target"
+        }),
+        Return_Risk: makeResultRow({
+            name: "Return/Risk",
+            fix: 2,
+            eval: "i.Distance_to_Target / i.Distance_to_Stop",
+            tooltip: ""
+        })
+    };
+
+    r["Capital"].inputs({
+        "i.Capital": i["Capital"],
+        "i.BTC_Price": i["BTC_Price"]
+    });
+    r["Position_Size_ETH"].inputs({
+        "r.Risk_Amount_USD": r["Risk_Amount_USD"],
+        "r.Margin": r["Margin"],
+        "i.ETH_Price": i["ETH_Price"]
+    });
+    r["Position_Size"].inputs({
+        "r.Risk_Amount_USD": r["Risk_Amount_USD"],
+        "r.Margin": r["Margin"]
+    });
+    r["Risk_Amount_USD"].inputs({
+        "r.Capital": r["Capital"],
+        "i.Risk_Amount": i["Risk_Amount"]
+    });
+    r["Risk_Amount_BTC"].inputs({
+        "i.Capital": i["Capital"],
+        "i.Risk_Amount": i["Risk_Amount"]
+    });
+    r["Margin"].inputs({
+        "i.Distance_to_Stop": i["Distance_to_Stop"],
+        "i.Entry_Price": i["Entry_Price"]
+    });
+    r["Leverage"].inputs({
+        "r.Position_Size": r["Position_Size"],
+        "r.Risk_Amount_USD": r["Risk_Amount_USD"]
+    });
+    r["Long_Stop"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Stop": i["Distance_to_Stop"]
+    });
+    r["Short_Stop"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Stop": i["Distance_to_Stop"]
+    });
+    r["Distance_to_Target"].inputs({
+        "i.Distance_to_Target": i["Distance_to_Target"],
+        "i.Entry_Price": i["Entry_Price"]
+    });
+    r["Long_Target"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Target": i["Distance_to_Target"]
+    });
+    r["Short_Target"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "i.Distance_to_Target": i["Distance_to_Target"]
+    });
+    r["Return_Risk"].inputs({
+        "i.Distance_to_Target": i["Distance_to_Target"],
+        "i.Distance_to_Stop": i["Distance_to_Stop"]
+    });
+
+    let enter_block = new Block("Enter Data", "");
+    enter_block.className += " enter_data";
+
+    let result_block = new Block("Result", "");
+    result_block.className += " result";
+
+    Object.keys(r).map( (k) =>
+    {
+        result_block.add(r[k])
+    } );
+
+    Object.keys(i).map( (k) =>
+    {
+        enter_block.add(i[k]);
+    } );
+
+    row1.appendChild( enter_block );
+    row2.appendChild( result_block );
+
+    $.get('https://data.messari.io/api/v1/assets/btc/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["BTC_Price"].val( price.toFixed(0) );
+    });
+
+    $.get('https://data.messari.io/api/v1/assets/eth/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["ETH_Price"].val( price.toFixed(0) );
+    });
+    $.get('https://data.messari.io/api/v1/assets/eth/metrics', resp => {
+        let price = resp.data.market_data.price_btc;
+        i["ETHBTC_Price"].val( price.toFixed(6) );
+    });
+
+    tippy('[title]');
+}
+
+function XbtUsdLiq()
+{
+    tabsMain['BitMEX'].active();
+
+    row1.classList.remove('d-none');
+    row2.classList.remove('d-none');
+
+    let i = {
+        BTC_Price: makeInput("fa fa-usd", "Bitcoin Price", ""),
+        Entry_Price: makeInput("fa fa-usd", "Entry Price", ""),
+        Leverage: slider("Leverage"),
+        Position_Size: makeInput("fa fa-usd", "Position Size")
+    };
+
+    let a = {
+        Maintenance_Margin: makeResultRow({
+            name: "Maintenance Margin",
+            fix: 6,
+            inner: "0.005"
+        }),
+        Adjusted_Long: makeResultRow({
+            name: "Adjusted Long",
+            fix: 6,
+            eval: "a.Maintenance_Margin - (1 / i.Leverage * a.Maintenance_Margin)"
+        }),
+        Adjusted_Short: makeResultRow({
+            name: "Adjusted Short",
+            fix: 6,
+            eval: "a.Maintenance_Margin + (1 / i.Leverage * a.Maintenance_Margin)"
+        })
+    };
