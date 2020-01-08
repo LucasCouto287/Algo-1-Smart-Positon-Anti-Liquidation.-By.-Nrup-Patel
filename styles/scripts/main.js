@@ -203,3 +203,70 @@ function Block(name, icon)
 
     return node;
 }
+
+function makeInput(icon, name, tooltip = "")
+{
+    let node = document.createElement('div');
+    node.className = "input-row";
+
+    let label = document.createElement('label');
+    label.innerHTML = name;
+
+    let group = document.createElement('div');
+    group.className = "input-group input-group-sm";
+
+    let prepend = document.createElement('div');
+    prepend.className = "input-group-prepend";
+    prepend.innerHTML = `<div class="input-group-text"><i class="fa-fw ${icon}"></i></div>`;
+
+    let append = document.createElement('div');
+    append.className = "input-group-append";
+
+    if(tooltip)
+    {
+        let icon = document.createElement('i');
+        icon.className = "fa fa-question-circle ml-1";
+        icon.setAttribute("title", tooltip);
+
+        label.appendChild(icon);
+    }
+
+    let input = document.createElement('input');
+    input.className = "form-control";
+    input.placeholder = name;
+    input.onkeypress = function(evt)
+    {
+        let charCode = (evt.which) ? evt.which : event.keyCode;
+
+        let can = !(charCode > 31 && (charCode < 48 || charCode > 57));
+
+        if(charCode === 46)
+            can = true;
+
+        return can;
+    };
+
+    let btn_up = document.createElement('div');
+    btn_up.className = "input-group-text";
+    btn_up.innerHTML = `<i class="fa fa-fw fa-plus"></i>`;
+    btn_up.onclick = function()
+    {
+        let number = input.value ? input.value : 0;
+        input.value = parseInt(number) + 1;
+        input.dispatchEvent(event);
+    };
+
+    let btn_down = document.createElement('div');
+    btn_down.className = "input-group-text";
+    btn_down.innerHTML = `<i class="fa fa-fw fa-minus"></i>`;
+    btn_down.onclick = function()
+    {
+        let number = input.value ? input.value : 0;
+
+        if(number > 0)
+            input.value = parseInt(number) - 1;
+        else
+            input.value = parseInt(number);
+
+        input.dispatchEvent(event);
+    };
