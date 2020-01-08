@@ -1316,3 +1316,31 @@ function XbtUsdLiq()
             eval: "a.Maintenance_Margin + (1 / i.Leverage * a.Maintenance_Margin)"
         })
     };
+
+    let rsm = {
+        Initial_Margin: makeResultRow({
+            name: "Initial Margin",
+            append: "BTC",
+            fix: 4,
+            eval: "(i.Position_Size / i.BTC_Price) / i.Leverage"
+        }),
+        Taker_Fees: makeResultRow({
+            name: "2 x Taker Fees",
+            append: "BTC",
+            fix: 4,
+            eval: "(0.0015 * i.Position_Size) / i.BTC_Price"
+        }),
+        Cost_BTC: makeResultRow({
+            name: "Cost (BTC)",
+            append: "BTC",
+            fix: 4,
+            eval: "rsm.Initial_Margin + rsm.Taker_Fees",
+            tooltip: ""
+        }),
+        Cost_USD: makeResultRow({
+            name: "Cost (USD)",
+            append: "$",
+            fix: 0,
+            eval: "rsm.Cost_BTC * i.BTC_Price"
+        })
+    };
