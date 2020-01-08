@@ -107,3 +107,99 @@ Object.keys(tabsMain).map( (k) =>
 {
     tabsMain[k].onclick = tabsMain[k].active;
 } );
+
+menuList.map( (item, i) =>
+{
+    let li = document.createElement('li');
+    li.className = "nav-item";
+
+    let link = document.createElement('a');
+    link.className = "nav-link";
+    link.innerHTML = item.name;
+    link.href = "#"+item.link;
+    link.onclick = function ()
+    {
+        link.active();
+    };
+
+    link.active = function ()
+    {
+        menuList.map( (item) => { item.el.classList.remove('active') });
+        link.classList.add('active');
+
+        openTab(tabs[item.link]);
+    };
+
+    li.appendChild(link);
+
+    if(location.hash === "#"+item.link)
+        link.classList.add('active');
+
+    menuList[i].el = link;
+
+    if(item.menu2)
+        menu2.appendChild(li);
+    else
+        menu.appendChild(li);
+} );
+
+if(!location.hash)
+    location.hash = "XbtUsd";
+
+openTab(tabs[location.hash.substr(1)]);
+
+window.onhashchange = function ()
+{
+    menuList.map( (item) =>
+    {
+        item.el.classList.remove('active');
+
+        if(item.link === location.hash.substr(1))
+            item.el.active();
+    });
+};
+
+function openTab(tab)
+{
+    row1.innerHTML = "";
+    row2.innerHTML = "";
+    row4.innerHTML = "";
+
+    row1.classList.add('d-none');
+    row2.classList.add('d-none');
+    row3.classList.add('d-none');
+    row4.classList.add('d-none');
+
+    if(tab) tab();
+}
+
+function Block(name, icon)
+{
+    let node = document.createElement('div');
+    node.className = "block";
+
+    let title = document.createElement('h4');
+    title.className = "block-title";
+    title.innerHTML = name;
+
+    let body = document.createElement('div');
+    body.className = "block-body";
+
+    node.append = function (elements)
+    {
+        elements.map( (el) =>
+        {
+            body.appendChild(el);
+        });
+    };
+
+    node.add = function (element)
+    {
+        body.appendChild(element);
+    };
+
+    node.appendChild(title);
+    node.appendChild(body);
+
+    return node;
+}
