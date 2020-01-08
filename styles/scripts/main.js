@@ -51,3 +51,32 @@ let menuList = [
     },
  
 ];
+
+tabsMain['BitMEX'].active = function()
+{
+    menu.classList.remove('d-none');
+    menu2.classList.add('d-none');
+
+    tabsMain['BitMEX'].classList.add('active');
+    tabsMain['Deribit'].classList.remove('active');
+    tabsMain['Guide'].classList.remove('active');
+    tabsMain['Traders'].classList.remove('active');
+
+    document.getElementById('tab-body-Main').classList.add('d-block');
+    document.getElementById('tab-body-Guide').classList.remove('d-block');
+    document.getElementById('tab-body-Traders').classList.remove('d-block');
+};
+tabsMain['Deribit'].active = function()
+{
+    menu.classList.add('d-none');
+    menu2.classList.remove('d-none');
+
+    tabsMain['BitMEX'].classList.remove('active');
+    tabsMain['Deribit'].classList.add('active');
+    tabsMain['Guide'].classList.remove('active');
+    tabsMain['Traders'].classList.remove('active');
+
+    document.getElementById('tab-body-Main').classList.add('d-block');
+    document.getElementById('tab-body-Guide').classList.remove('d-block');
+    document.getElementById('tab-body-Traders').classList.remove('d-block');
+};
