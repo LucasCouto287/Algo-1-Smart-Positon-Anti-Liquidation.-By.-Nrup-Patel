@@ -73,3 +73,6 @@ background: #fff;
     margin-bottom: 10px;
     letter-spacing: 2px;
     text-transform: uppercase;
+  text-align: right;
+    border-bottom: 1px solid #ddd;
+    font-family: 'Montserrat', sans-serif; }
