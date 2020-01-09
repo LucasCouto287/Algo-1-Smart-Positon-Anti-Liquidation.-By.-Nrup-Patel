@@ -108,7 +108,8 @@ background: #fff;
       font-size: 12px;
       padding-top: 20px;
       position: relative; }
-  
+   .block .input-slider .slider-btn:hover:after {
+        background: #777; }
   
   
   
