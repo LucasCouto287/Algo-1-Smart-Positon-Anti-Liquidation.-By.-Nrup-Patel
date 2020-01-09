@@ -148,6 +148,9 @@ background: #fff;
     background: none;
     transition: .3s;
     border-radius: .2rem 0 0 .2rem; }
-  
+   .block .input-group .input-group-append .input-group-text + .input-group-text {
+      border-radius: 0 .2rem .2rem 0; }
+    .block .input-group .input-group-append .input-group-text:hover {
+      color: rgb(7, 6, 6); }
   
   
