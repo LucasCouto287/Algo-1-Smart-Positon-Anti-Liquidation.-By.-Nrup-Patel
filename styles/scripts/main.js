@@ -1561,3 +1561,83 @@ function XbtUsdLiq()
     h.style.fontWeight = "900";
     h.innerHTML = `<span></span><span>Long</span><span>Short</span>`;
     result_block.add(h);
+
+    Object.keys(r).map( (k) =>
+    {
+        result_block.add(r[k]);
+
+        if(k === "Change_PL_USD")
+        {
+            let h = document.createElement('hr');
+            h.style.margin = "10px 0";
+
+            result_block.add(h);
+        }
+
+        if(k === "Change_PB_USD")
+        {
+            let h = document.createElement('h3');
+            h.innerHTML = "At Liquidation";
+            h.style.margin = "10px 0";
+            h.style.padding = "10px 0 0 0";
+            h.style.lineHeight = "1";
+            h.style.fontSize = "12px";
+            h.style.fontWeight = "900";
+            h.style.letterSpacing = "1px";
+            h.style.fontFamily = "'Montserrat', sans-serif";
+            h.style.textTransform = "uppercase";
+            h.style.borderTop = "1px solid #ddd";
+
+            result_block.add(h);
+        }
+    } );
+
+    Object.keys(rsm).map( (k) =>
+    {
+        result_block_s.add(rsm[k])
+    } );
+
+    Object.keys(a).map( (k) =>
+    {
+        result_block_a.add(a[k])
+    } );
+
+    Object.keys(i).map( (k) =>
+    {
+        enter_block.add(i[k]);
+    } );
+
+    row1.appendChild( enter_block );
+    row1.appendChild( result_block_s );
+    row1.appendChild( result_block_a );
+    row2.appendChild( result_block );
+
+    $.get('https://data.messari.io/api/v1/assets/btc/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["BTC_Price"].val( price.toFixed(0) );
+    });
+
+    tippy('[title]');
+
+    app.toggle_hidden = function()
+    {
+        result_block_a.classList.toggle('d-none');
+    }
+}
+
+function Calls()
+{
+    tabsMain['Deribit'].active();
+
+    row1.classList.remove('d-none');
+    row2.classList.remove('d-none');
+    row4.classList.remove('d-none');
+
+    let i = {
+        Btcusd: makeInput("fa fa-usd", "BTCUSD", "Enter actual Spot Bitcoin price"),
+        Btc_entry: makeInput("fa fa-usd", "BTC underlying at entry", "Deribit Bitcoin Options are Options on Futures. Enter the price of the Underlying Future e.g.  BTC-29MAR19"),
+        Expiry: makeDate("fa fa-calendar", "Expiry"),
+        Strike: makeInput("fa fa-usd", "Strike"),
+        Premium: makeInput("fa fa-usd", "Premium (BTC)", "If buying Option then enter the Ask premium. If selling/writing Option enter the Bid premium."),
+        Target_Price: makeInput("fa fa-usd", "Target price at expiry", "Target price of underlying Future.")
+    };
