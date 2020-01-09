@@ -134,7 +134,11 @@ background: #fff;
     margin-bottom: 0; }
    .block .input-group:hover .input-group-append .input-group-text {
     background: #ffffff; }
-  
+  .block .input-group .input-group-prepend .input-group-text {
+    padding: 0 5px;
+    border: none;
+    color: rgb(0, 0, 0);
+    background: none; }
   
   
   
