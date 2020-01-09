@@ -1344,3 +1344,220 @@ function XbtUsdLiq()
             eval: "rsm.Cost_BTC * i.BTC_Price"
         })
     };
+
+    let r = {
+        Liquidation_Price: makeResultRow({
+            name: "Liquidation Price",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "i.Entry_Price + (i.Entry_Price * rl.Change_PL_P) / 100",
+                short: "i.Entry_Price + (i.Entry_Price * rs.Change_PL_P) / 100"
+            },
+            tooltip: ""
+        }),
+        Change_PL_P: makeResultRow({
+            name: "Change in Price to Liquidation (%)",
+            append: "%",
+            twoCol: true,
+            eval: {
+                long: "rl.Change_PB_P + (a.Adjusted_Long * 100)",
+                short: "rs.Change_PB_P - (a.Adjusted_Short * 100)"
+            },
+            tooltip: ""
+        }),
+        Change_PL_USD: makeResultRow({
+            name: "Change in Price to Liquidation ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "(i.Entry_Price - rl.Liquidation_Price) * (-1)",
+                short: "(i.Entry_Price - rs.Liquidation_Price) * (-1)"
+            }
+        }),
+
+        Bankruptcy_Price: makeResultRow({
+            name: "Bankruptcy Price",
+            append: "$",
+            fix: 0,
+            twoCol: true,
+            eval: {
+                long: "i.Entry_Price + (i.Entry_Price * (rl.Change_PB_P / 100))",
+                short: "i.Entry_Price + (i.Entry_Price * (rs.Change_PB_P / 100))"
+            },
+            tooltip: ""
+        }),
+        Change_PB_P: makeResultRow({
+            name: "Change in Price to Bankruptcy (%)",
+            append: "%",
+            twoCol: true,
+            eval: {
+                long: "(1 / (i.Leverage + 1) * (-1)) * 100",
+                short: "(1 / (i.Leverage - 1)) * 100"
+            }
+        }),
+        Change_PB_USD: makeResultRow({
+            name: "Change in Price to Bankruptcy ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "(i.Entry_Price - rl.Bankruptcy_Price) * (-1)",
+                short: "(i.Entry_Price - rs.Bankruptcy_Price) * (-1)"
+            }
+        }),
+
+        Total_Loss_BTC: makeResultRow({
+            name: "Total Loss (BTC)",
+            append: "$",
+            fix: 4,
+            twoCol: true,
+            eval: {
+                long: "rsm.Initial_Margin + (rsm.Taker_Fees / 2)",
+                short: "rsm.Initial_Margin + (rsm.Taker_Fees / 2)"
+            },
+            tooltip: ""
+        }),
+        Total_Loss_USD: makeResultRow({
+            name: "Total Loss ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "rl.Total_Loss_BTC * rl.Liquidation_Price",
+                short: "rs.Total_Loss_BTC * rs.Liquidation_Price"
+            }
+        }),
+        Payment_IF_BTC: makeResultRow({
+            name: "Payment to Insurance Fund (BTC)",
+            append: "BTC",
+            fix: 4,
+            twoCol: true,
+            eval: {
+                long: "(rsm.Cost_BTC * rl.Payment_IF_P) * 0.01",
+                short: "(rsm.Cost_BTC * rs.Payment_IF_P) * 0.01"
+            }
+        }),
+        Payment_IF_USD: makeResultRow({
+            name: "Payment to Insurance Fund ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "rl.Payment_IF_BTC * rl.Liquidation_Price",
+                short: "rs.Payment_IF_BTC * rs.Liquidation_Price"
+            }
+        }),
+        Payment_IF_P: makeResultRow({
+            name: "Payment to Insurance Fund <br> (% of Total Loss)",
+            append: "%",
+            twoCol: true,
+            eval: {
+                long: "(1 - (rl.Change_PL_P / rl.Change_PB_P)) * 100",
+                short: "(1 - (rs.Change_PL_P / rs.Change_PB_P)) * 100"
+            },
+            tooltip: ""
+        })
+    };
+
+    a["Adjusted_Long"].inputs({
+        "a.Maintenance_Margin": a["Maintenance_Margin"],
+        "i.Leverage": i["Leverage"]
+    });
+    a["Adjusted_Short"].inputs({
+        "a.Maintenance_Margin": a["Maintenance_Margin"],
+        "i.Leverage": i["Leverage"]
+    });
+
+    rsm["Initial_Margin"].inputs({
+        "i.Position_Size": i["Position_Size"],
+        "i.BTC_Price": i["BTC_Price"],
+        "i.Leverage": i["Leverage"]
+    });
+    rsm["Taker_Fees"].inputs({
+        "i.Position_Size": i["Position_Size"],
+        "i.BTC_Price": i["BTC_Price"]
+    });
+    rsm["Cost_BTC"].inputs({
+        "rsm.Initial_Margin": rsm["Initial_Margin"],
+        "rsm.Taker_Fees": rsm["Taker_Fees"]
+    });
+    rsm["Cost_USD"].inputs({
+        "rsm.Cost_BTC": rsm["Cost_BTC"],
+        "i.BTC_Price": i["BTC_Price"]
+    });
+
+    r["Liquidation_Price"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "rl.Change_PL_P": r["Change_PL_P"],
+        "rs.Change_PL_P": r["Change_PL_P"]
+    });
+    r["Change_PL_P"].inputs({
+        "rl.Change_PB_P": r["Change_PB_P"],
+        "rs.Change_PB_P": r["Change_PB_P"],
+        "a.Adjusted_Long": a["Adjusted_Long"],
+        "a.Adjusted_Short": a["Adjusted_Short"]
+    });
+    r["Change_PL_USD"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "rl.Liquidation_Price": r["Liquidation_Price"],
+        "rs.Liquidation_Price": r["Liquidation_Price"]
+    });
+
+    r["Bankruptcy_Price"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "rl.Change_PB_P": r["Change_PB_P"],
+        "rs.Change_PB_P": r["Change_PB_P"]
+    });
+    r["Change_PB_P"].inputs({
+        "i.Leverage": i["Leverage"]
+    });
+    r["Change_PB_USD"].inputs({
+        "i.Entry_Price": i["Entry_Price"],
+        "rl.Bankruptcy_Price": r["Bankruptcy_Price"],
+        "rs.Bankruptcy_Price": r["Bankruptcy_Price"]
+    });
+
+    r["Total_Loss_BTC"].inputs({
+        "rsm.Initial_Margin": rsm["Initial_Margin"],
+        "rsm.Taker_Fees": rsm["Taker_Fees"]
+    });
+    r["Total_Loss_USD"].inputs({
+        "rl.Total_Loss_BTC": r["Total_Loss_BTC"],
+        "rs.Total_Loss_BTC": r["Total_Loss_BTC"],
+        "rl.Liquidation_Price": r["Liquidation_Price"],
+        "rs.Liquidation_Price": r["Liquidation_Price"]
+    });
+    r["Payment_IF_BTC"].inputs({
+        "rsm.Cost_BTC": rsm["Cost_BTC"],
+        "rl.Payment_IF_P": r["Payment_IF_P"],
+        "rs.Payment_IF_P": r["Payment_IF_P"]
+    });
+    r["Payment_IF_USD"].inputs({
+        "rl.Payment_IF_BTC": r["Payment_IF_BTC"],
+        "rs.Payment_IF_BTC": r["Payment_IF_BTC"],
+        "rl.Liquidation_Price": r["Liquidation_Price"],
+        "rs.Liquidation_Price": r["Liquidation_Price"]
+    });
+    r["Payment_IF_P"].inputs({
+        "rl.Change_PL_P": r["Change_PL_P"],
+        "rs.Change_PL_P": r["Change_PL_P"],
+        "rl.Change_PB_P": r["Change_PB_P"],
+        "rs.Change_PB_P": r["Change_PB_P"]
+    });
+
+    let enter_block = new Block("Enter Data", "");
+    enter_block.className += " enter_data mb-3";
+
+    let result_block = new Block("Result", "");
+    result_block.className += " result";
+
+    let result_block_s = new Block("Cost Calculator", "");
+    result_block_s.className += " result";
+
+    let result_block_a = new Block("Hidden", "");
+    result_block_a.className += " result d-none mt-3";
+
+    let h = document.createElement('div');
+    h.className = 'table-row';
+    h.style.fontSize = "12px";
+    h.style.fontWeight = "900";
+    h.innerHTML = `<span></span><span>Long</span><span>Short</span>`;
+    result_block.add(h);
