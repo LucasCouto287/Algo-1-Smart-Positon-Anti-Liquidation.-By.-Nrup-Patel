@@ -22,3 +22,6 @@ font-size: 25px;
 font-weight: 700;
       border-bottom: 4px solid transparent;
       font-family: 'Karla', normal;
+  user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
