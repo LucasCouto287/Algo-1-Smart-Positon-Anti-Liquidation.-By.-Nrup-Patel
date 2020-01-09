@@ -1840,3 +1840,365 @@ function Calls()
             tooltip: "For Call Option seller, Initial Margin has values:<br>ITM 0.15<br>Close to ATM Between 0.1 and 0.15<br>OTM 0.1"
         })
     };
+
+    let r4 = {
+        Break_even_btc: makeResultRow({
+            name: "Break-Even in BTC",
+            fix: 0,
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "i.Strike / (1 - i.Premium)",
+                short: "i.Strike / (1 - i.Premium)"
+            }
+        }),
+        Change_be_usd: makeResultRow({
+            name: "Change to B/E ($)",
+            fix: 0,
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "rl.Break_even_btc - i.Btc_entry",
+                short: "rs.Break_even_btc - i.Btc_entry"
+            }
+        }),
+        Change_be_prc: makeResultRow({
+            name: "Change to B/E (%)",
+            fix: 2,
+            append: "%",
+            twoCol: true,
+            eval:   {
+                long: "(rl.Change_be_usd / i.Btc_entry) * 100",
+                short: "(rs.Change_be_usd / i.Btc_entry) * 100"
+            }
+        }),
+
+        Break_even_usd: makeResultRow({
+            name: "Break-Even in USD",
+            fix: 2,
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "r.Premium + i.Strike",
+                short: "r.Premium + i.Strike"
+            }
+        }),
+        Change_be_usd2: makeResultRow({
+            name: "Change to B/E ($)",
+            fix: 0,
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "rl.Break_even_usd - i.Btc_entry",
+                short: "rs.Break_even_usd - i.Btc_entry"
+            }
+        }),
+        Change_be_prc2: makeResultRow({
+            name: "Change to B/E (%)",
+            fix: 2,
+            append: "%",
+            twoCol: true,
+            eval: {
+                long: "(rl.Change_be_usd2 / i.Btc_entry) * 100",
+                short: "(rs.Change_be_usd2 / i.Btc_entry) * 100"
+            }
+        })
+    };
+
+    r1["Premium"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Premium": i["Premium"]
+    });
+    r1["itm_otm"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Strike": i["Strike"]
+    });
+    r1["Intrinsic_usd"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Strike": i["Strike"]
+    });
+    r1["Intrinsic_btc"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "r.Intrinsic_usd": r1["Intrinsic_usd"]
+    });
+    r1["Intrinsic_prc"].inputs({
+        "i.Premium": i["Premium"],
+        "r.Intrinsic_btc": r1["Intrinsic_btc"]
+    });
+    r1["Non_intrinsic_usd"].inputs({
+        "r.Premium": r1["Premium"],
+        "r.Intrinsic_usd": r1["Intrinsic_usd"]
+    });
+    r1["Non_intrinsic_btc"].inputs({
+        "i.Premium": i["Premium"],
+        "r.Intrinsic_btc": r1["Intrinsic_btc"]
+    });
+    r1["Non_intrinsic_prc"].inputs({
+        "r.Intrinsic_prc": r1["Intrinsic_prc"]
+    });
+    r1["Days_to_expiry"].inputs({
+        "i.Expiry": i["Expiry"]
+    });
+
+    r2["Change_in_btcusd_usd"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Target_Price": i["Target_Price"]
+    });
+    r2["Change_in_btcusd_prc"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Target_Price": i["Target_Price"]
+    });
+    r2["Settlement_usd"].inputs({
+        "i.Target_Price": i["Target_Price"],
+        "i.Strike": i["Strike"]
+    });
+    r2["Settlement_btc"].inputs({
+        "i.Target_Price": i["Target_Price"],
+        "rl.Settlement_usd": r2["Settlement_usd"],
+        "rs.Settlement_usd": r2["Settlement_usd"]
+    });
+    r2["Pl_usd"].inputs({
+        "r.Premium": r1["Premium"],
+        "rl.Settlement_usd": r2["Settlement_usd"],
+        "rs.Settlement_usd": r2["Settlement_usd"]
+    });
+    r2["Pl_usd_prc"].inputs({
+        "r.Premium": r1["Premium"],
+        "rl.Pl_usd": r2["Pl_usd"],
+        "rs.Pl_usd": r2["Pl_usd"]
+    });
+    r2["Pl_btc"].inputs({
+        "i.Premium": i["Premium"],
+        "rl.Settlement_btc": r2["Settlement_btc"],
+        "rs.Settlement_btc": r2["Settlement_btc"]
+    });
+    r2["Pl_bt_prc"].inputs({
+        "i.Premium": i["Premium"],
+        "rl.Pl_btc": r2["Pl_btc"],
+        "rs.Pl_btc": r2["Pl_btc"]
+    });
+    r2["Leverage"].inputs({
+        "rl.Pl_usd_prc": r2["Pl_usd_prc"],
+        "rs.Pl_usd_prc": r2["Pl_usd_prc"],
+        "r.Change_in_btcusd_prc": r2["Change_in_btcusd_prc"]
+    });
+
+    r3["Max_gain_btc"].inputs({
+        "i.Premium": i["Premium"]
+    });
+    r3["Max_gain_usd"].inputs({
+        "r.Premium": r1["Premium"]
+    });
+    r3["Max_loss_btc"].inputs({
+        "i.Premium": i["Premium"]
+    });
+    r3["Max_loss_usd"].inputs({
+        "r.Premium": r1["Premium"]
+    });
+    r3["Initial_margin"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Strike": i["Strike"]
+    });
+
+    r4["Break_even_btc"].inputs({
+        "i.Strike": i["Strike"],
+        "i.Premium": i["Premium"]
+    });
+    r4["Change_be_usd"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Break_even_btc": r4["Break_even_btc"],
+        "rs.Break_even_btc": r4["Break_even_btc"]
+    });
+    r4["Change_be_prc"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Change_be_usd": r4["Change_be_usd"],
+        "rs.Change_be_usd": r4["Change_be_usd"]
+    });
+    r4["Break_even_usd"].inputs({
+        "i.Strike": i["Strike"],
+        "r.Premium": r1["Premium"]
+    });
+    r4["Change_be_usd2"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Break_even_usd": r4["Break_even_usd"],
+        "rs.Break_even_usd": r4["Break_even_usd"]
+    });
+    r4["Change_be_prc2"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Change_be_usd2": r4["Change_be_usd2"],
+        "rs.Change_be_usd2": r4["Change_be_usd2"]
+    });
+
+    let enter_block = new Block("Enter Data", "");
+    enter_block.className += " enter_data mb-3";
+
+    let result_premium = new Block("Premium", "");
+    result_premium.className += " result";
+
+    let result_pl = new Block("P/L at expiry", "");
+    result_pl.className += " result mb-3";
+
+    let result_mgml = new Block("Max gain & max loss", "");
+    result_mgml.className += " result";
+
+    let result_be = new Block("Break-even", "");
+    result_be.className += " result";
+
+    Object.keys(r1).map( (k) =>
+    {
+        result_premium.add(r1[k]);
+    } );
+
+    Object.keys(r2).map( (k) =>
+    {
+        result_pl.add(r2[k]);
+
+        if(k === "Change_in_btcusd_prc")
+        {
+            let h = document.createElement('div');
+            h.className = 'table-row';
+            h.style.fontSize = "12px";
+            h.style.fontWeight = "900";
+            h.innerHTML = "<span></span><span>Long Call</span><span>Short Call</span>";
+            result_pl.add(h);
+        }
+    } );
+
+    let h = document.createElement('div');
+    h.className = 'table-row';
+    h.style.fontSize = "12px";
+    h.style.fontWeight = "900";
+    h.innerHTML = `<span></span><span>Long Call</span><span>Short Call</span>`;
+    result_mgml.add(h);
+
+    Object.keys(r3).map( (k) =>
+    {
+        result_mgml.add(r3[k]);
+
+        if(k === "Max_loss_usd")
+        {
+            let h = document.createElement('h3');
+            h.innerHTML = "Initial margin";
+            h.style.margin = "10px 0";
+            h.style.padding = "10px 0 0 0";
+            h.style.lineHeight = "1";
+            h.style.fontSize = "12px";
+            h.style.fontWeight = "900";
+            h.style.letterSpacing = "1px";
+            h.style.fontFamily = "'Montserrat', sans-serif";
+            h.style.textTransform = "uppercase";
+            h.style.borderTop = "1px solid #ddd";
+
+            result_mgml.add(h);
+        }
+    } );
+
+    let h1 = document.createElement('div');
+    h1.className = 'table-row';
+    h1.style.fontSize = "12px";
+    h1.style.fontWeight = "900";
+    h1.innerHTML = `<span></span><span>Long Call</span><span>Short Call</span>`;
+    result_be.add(h1);
+
+    Object.keys(r4).map( (k) =>
+    {
+        result_be.add(r4[k]);
+    } );
+
+    Object.keys(i).map( (k) =>
+    {
+        enter_block.add(i[k]);
+    } );
+
+    row1.appendChild( enter_block );
+    row1.appendChild( result_premium );
+
+    row2.appendChild( result_pl );
+    row2.appendChild( result_mgml );
+
+    row4.appendChild( result_be );
+
+    $.get('https://data.messari.io/api/v1/assets/btc/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["Btcusd"].val( price.toFixed(0) );
+    });
+    tippy('[title]');
+}
+
+function Puts()
+{
+    tabsMain['Deribit'].active();
+
+    row1.classList.remove('d-none');
+    row2.classList.remove('d-none');
+    row4.classList.remove('d-none');
+
+    let i = {
+        Btcusd: makeInput("fa fa-usd", "BTCUSD", "Enter actual Spot Bitcoin price"),
+        Btc_entry: makeInput("fa fa-usd", "BTC underlying at entry", "Deribit Bitcoin Options are Options on Futures. Enter the price of the Underlying Future e.g.  BTC-29MAR19"),
+        Expiry: makeDate("fa fa-calendar", "Expiry"),
+        Strike: makeInput("fa fa-usd", "Strike"),
+        Premium: makeInput("fa fa-usd", "Premium (BTC)", "If buying Option then enter the Ask premium. If selling/writing Option enter the Bid premium."),
+        Target_Price: makeInput("fa fa-usd", "Target price at expiry", "Target price of underlying Future.")
+    };
+
+    let r1 ={
+        Premium: makeResultRow({
+            name: "PREMIUM ($)",
+            append: "$",
+            fix: 0,
+            eval: "i.Premium * i.Btc_entry",
+            tooltip: "This is the most the buyer of the Option can lose, and is the maximum profit of the Option seller."
+        }),
+        itm_otm: makeResultRow({
+            name: "ITM/OTM",
+            eval: (e) =>
+            {
+                if(e['i.Strike'].val() < e['i.Btc_entry'].val()) return "Outofthemoney";
+                else return "Inthemoney";
+            },
+            tooltip: "ITM: Put Strike > Underlying price<br/> OTM: Put Strike < Underlying price"
+        }),
+        Intrinsic_usd: makeResultRow({
+            name: "Intrinsic value ($)",
+            eval: (e) =>
+            {
+                let r = e['i.Strike'].val() - e['i.Btc_entry'].val();
+
+                if(e['i.Btc_entry'].val() !== undefined && e['i.Strike'].val() !== undefined)
+                    return r < 0 ? `<small>$</small>0` : `<small>$</small>`+r;
+                else return '';
+            }
+        }),
+        Intrinsic_btc: makeResultRow({
+            name: "Intrinsic value (BTC)",
+            fix: 4,
+            eval: "r.Intrinsic_usd / i.Btc_entry"
+        }),
+        Intrinsic_prc: makeResultRow({
+            name: "INTRINSIC VALUE (% of premium)",
+            append: "%",
+            fix: 0,
+            eval: "(r.Intrinsic_btc / i.Premium) * 100"
+        }),
+        Non_intrinsic_usd: makeResultRow({
+            name: "Non-intrinsic ($) [Time + Volatility]",
+            append: "$",
+            eval: "r.Premium - r.Intrinsic_usd"
+        }),
+        Non_intrinsic_btc: makeResultRow({
+            name: "Non-intrinsic (BTC)",
+            append: "$",
+            fix: 4,
+            eval: "i.Premium - r.Intrinsic_btc"
+        }),
+        Non_intrinsic_prc: makeResultRow({
+            name: "Non-intrinsic (% of premium)",
+            append: "%",
+            eval: "100 - r.Intrinsic_prc"
+        }),
+        Days_to_expiry: makeResultRow({
+            name: "Days to expiry",
+            eval: "i.Expiry"
+        })
+    };
