@@ -32,3 +32,6 @@ font-weight: 700;
       .sidebar .nav .nav-link:focus {
         outline: none; }
       .sidebar .nav .nav-link.active {
+  color: #343a40;
+        border-color:#343a40; }
+      .sidebar .nav .nav-link i {
