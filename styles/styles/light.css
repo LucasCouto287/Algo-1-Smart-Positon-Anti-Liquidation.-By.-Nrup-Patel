@@ -82,3 +82,5 @@ background: #fff;
     margin-bottom: 0; }
 .block .input-row label {
     font-weight: bold; }
+  .block .input-row + .input-row {
+    margin-top: 15px; }
