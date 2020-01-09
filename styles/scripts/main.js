@@ -2340,3 +2340,71 @@ function Puts()
             tooltip: "For Put Option seller, Initial Margin has values:<br>ITM 0.15<br>Very close to ATM Between 0.1 and 0.15<br>OTM Between 0 and 0.1"
         })
     };
+
+    r3["Max_gain_btc"].inputs({
+        "i.Premium": i["Premium"]
+    });
+    r3["Max_gain_usd"].inputs({
+        "i.Strike": i["Strike"],
+        "r.Premium": r1["Premium"]
+    });
+    r3["Max_loss_btc"].inputs({
+        "i.Premium": i["Premium"]
+    });
+    r3["Max_loss_usd"].inputs({
+        "i.Strike": i["Strike"],
+        "r.Premium": r1["Premium"]
+    });
+    r3["Initial_margin"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "i.Strike": i["Strike"]
+    });
+
+    r4["Break_even_btc"].inputs({
+        "i.Strike": i["Strike"],
+        "i.Premium": i["Premium"]
+    });
+    r4["Change_be_usd"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Break_even_btc": r4["Break_even_btc"],
+        "rs.Break_even_btc": r4["Break_even_btc"]
+    });
+    r4["Change_be_prc"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Change_be_usd": r4["Change_be_usd"],
+        "rs.Change_be_usd": r4["Change_be_usd"]
+    });
+    r4["Break_even_usd"].inputs({
+        "i.Strike": i["Strike"],
+        "r.Premium": r1["Premium"]
+    });
+    r4["Change_be_usd2"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Break_even_usd": r4["Break_even_usd"],
+        "rs.Break_even_usd": r4["Break_even_usd"]
+    });
+    r4["Change_be_prc2"].inputs({
+        "i.Btc_entry": i["Btc_entry"],
+        "rl.Change_be_usd2": r4["Change_be_usd2"],
+        "rs.Change_be_usd2": r4["Change_be_usd2"]
+    });
+
+    let enter_block = new Block("Enter Data", "");
+    enter_block.className += " enter_data mb-3";
+
+    let result_premium = new Block("Premium", "");
+    result_premium.className += " result";
+
+    let result_pl = new Block("P/L at expiry", "");
+    result_pl.className += " result mb-3";
+
+    let result_mgml = new Block("Max gain & max loss", "");
+    result_mgml.className += " result";
+
+    let result_be = new Block("Break-even", "");
+    result_be.className += " result";
+
+    Object.keys(r1).map( (k) =>
+    {
+        result_premium.add(r1[k]);
+    } );
