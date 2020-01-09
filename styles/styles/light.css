@@ -139,7 +139,15 @@ background: #fff;
     border: none;
     color: rgb(0, 0, 0);
     background: none; }
-  
+  .block .input-group .input-group-append .input-group-text {
+    border: none;
+    padding: 0 10px;
+    color: rgb(5, 5, 5);
+    cursor: pointer;
+    font-size: 10px;
+    background: none;
+    transition: .3s;
+    border-radius: .2rem 0 0 .2rem; }
   
   
   
