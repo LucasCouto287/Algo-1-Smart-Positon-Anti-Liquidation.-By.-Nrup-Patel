@@ -13,3 +13,6 @@ font-size: 25px;
   .sidebar .nav {
  justify-content: stretch;
     flex-direction: row !important; }
+ .sidebar .nav .nav-item {
+      padding: 0 10px; }
+    .sidebar .nav .nav-link {
