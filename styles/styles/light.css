@@ -110,7 +110,8 @@ background: #fff;
       position: relative; }
    .block .input-slider .slider-btn:hover:after {
         background: #777; }
-  
+   .block .input-slider .slider-btn.active:hover:after {
+        background: #ddd; }
   
   
   
