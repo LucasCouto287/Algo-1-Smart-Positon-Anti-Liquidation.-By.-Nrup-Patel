@@ -117,7 +117,19 @@ background: #fff;
         border-color: #777;
         background: #777; }
   
-  
+   .block .input-slider .slider-btn:after {
+        top: 0;
+        left: 5%;
+        content: '';
+        width: 12px;
+        z-index: 10;
+        height: 12px;
+        transition: .3s;
+        background: rgb(0, 0, 0);
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid rgb(0, 0, 0);
+        transform: translateX(-50%); }
   
   
   
