@@ -132,7 +132,8 @@ background: #fff;
         transform: translateX(-50%); }
   .block .input-group:last-child {
     margin-bottom: 0; }
-  
+   .block .input-group:hover .input-group-append .input-group-text {
+    background: #ffffff; }
   
   
   
