@@ -2408,3 +2408,18 @@ function Puts()
     {
         result_premium.add(r1[k]);
     } );
+
+    Object.keys(r2).map( (k) =>
+    {
+        result_pl.add(r2[k]);
+
+        if(k === "Change_in_btcusd_prc")
+        {
+            let h = document.createElement('div');
+            h.className = 'table-row';
+            h.style.fontSize = "12px";
+            h.style.fontWeight = "900";
+            h.innerHTML = "<span></span><span>Long Put</span><span>Short Put</span>";
+            result_pl.add(h);
+        }
+    } );
