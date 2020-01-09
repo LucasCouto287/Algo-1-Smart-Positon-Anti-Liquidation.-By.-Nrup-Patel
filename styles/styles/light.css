@@ -16,3 +16,6 @@ font-size: 25px;
  .sidebar .nav .nav-item {
       padding: 0 10px; }
     .sidebar .nav .nav-link {
+ color: #000000;
+      font-size: 20px;
+      justify-content: stretch;
