@@ -28,3 +28,7 @@ font-weight: 700;
 -webkit-user-select: none;
       -webkit-touch-callout: none; }
       .sidebar .nav .nav-link:hover {
+   color: #343a40; }
+      .sidebar .nav .nav-link:focus {
+        outline: none; }
+      .sidebar .nav .nav-link.active {
