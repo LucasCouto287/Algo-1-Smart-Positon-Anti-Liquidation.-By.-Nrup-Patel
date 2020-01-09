@@ -2423,3 +2423,32 @@ function Puts()
             result_pl.add(h);
         }
     } );
+
+    let h = document.createElement('div');
+    h.className = 'table-row';
+    h.style.fontSize = "12px";
+    h.style.fontWeight = "900";
+    h.innerHTML = `<span></span><span>Long Put</span><span>Short Put</span>`;
+    result_mgml.add(h);
+
+    Object.keys(r3).map( (k) =>
+    {
+        result_mgml.add(r3[k]);
+
+        if(k === "Max_loss_usd")
+        {
+            let h = document.createElement('h3');
+            h.innerHTML = "Initial margin";
+            h.style.margin = "10px 0";
+            h.style.padding = "10px 0 0 0";
+            h.style.lineHeight = "1";
+            h.style.fontSize = "12px";
+            h.style.fontWeight = "900";
+            h.style.letterSpacing = "1px";
+            h.style.fontFamily = "'Montserrat', sans-serif";
+            h.style.textTransform = "uppercase";
+            h.style.borderTop = "1px solid #ddd";
+
+            result_mgml.add(h);
+        }
+    } );
