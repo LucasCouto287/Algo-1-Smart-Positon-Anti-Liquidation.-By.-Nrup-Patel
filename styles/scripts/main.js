@@ -2202,3 +2202,141 @@ function Puts()
             eval: "i.Expiry"
         })
     };
+
+    let r2 ={
+        Change_in_btcusd_usd: makeResultRow({
+            name: "Change in BTCUSD ($)",
+            append: "$",
+            eval: "i.Target_Price - i.Btc_entry"
+        }),
+        Change_in_btcusd_prc: makeResultRow({
+            name: "Change in BTCUSD (%)",
+            append: "%",
+            fix: 2,
+            eval: "((i.Target_Price - i.Btc_entry) / i.Btc_entry) * 100"
+        }),
+
+        Settlement_usd: makeResultRow({
+            name: "Settlement ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long_minZero: true,
+                long: "i.Strike - i.Target_Price",
+                short: "(i.Strike - i.Target_Price) * -1"
+            },
+            tooltip: "Cash flow that results at Expiry if price of underlying future is at your Target price. But settlement of Deribit (Euopean) Options happens when you close the trade which you may do at ANY time during the Option's lifetime."
+        }),
+        Settlement_btc: makeResultRow({
+            name: "Settlement (BTC)",
+            fix: 4,
+            twoCol: true,
+            eval: {
+                long: "rl.Settlement_usd / i.Target_Price",
+                short: "rs.Settlement_usd / i.Target_Price"
+            }
+        }),
+        Pl_usd: makeResultRow({
+            name: "P/L ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "rl.Settlement_usd - r.Premium",
+                short: "rs.Settlement_usd + r.Premium"
+            }
+        }),
+        Pl_usd_prc: makeResultRow({
+            name: "P/L ($) %",
+            append: "%",
+            fix: 0,
+            twoCol: true,
+            eval: {
+                long: "(rl.Pl_usd / r.Premium) * 100",
+                short: "(rs.Pl_usd / r.Premium) * 100"
+            }
+        }),
+        Pl_btc: makeResultRow({
+            name: "P/L (BTC)",
+            fix: 4,
+            twoCol: true,
+            eval: {
+                long: "rl.Settlement_btc - i.Premium",
+                short: "rs.Settlement_btc + i.Premium"
+            }
+        }),
+        Pl_bt_prc: makeResultRow({
+            name: "P/L (BTC) %",
+            append: "%",
+            fix: 0,
+            twoCol: true,
+            eval: {
+                long: "(rl.Pl_btc / i.Premium) * 100",
+                short: "(rs.Pl_btc / i.Premium) * 100"
+            }
+        }),
+        Leverage: makeResultRow({
+            name: "Leverage",
+            fix: 2,
+            twoCol: true,
+            eval: {
+                long_minZero: true,
+                long: "(rl.Pl_usd_prc * -1) / r.Change_in_btcusd_prc",
+                short_inner: "n/a"
+            }
+        })
+    };
+
+    let r3 ={
+        Max_gain_btc: makeResultRow({
+            name: "MAX Gain (BTC)",
+            fix: 4,
+            twoCol: true,
+            eval: {
+                long_inner: "Infinite",
+                short: "i.Premium"
+            }
+        }),
+        Max_gain_usd: makeResultRow({
+            name: "MAX Gain ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "i.Strike - r.Premium",
+                short: "r.Premium"
+            }
+        }),
+        Max_loss_btc: makeResultRow({
+            name: "MAX Loss (BTC)",
+            twoCol: true,
+            fix: 4,
+            eval: {
+                long: "i.Premium",
+                short_inner: "Infinite",
+            },
+            tooltip: "The max. loss of writing a single Bitcoin Put Option in BTC is unlimited. New traders should NEVER write or sell options. Restrict all trading to buying Options (& you can sell those you own whenever you like)."
+        }),
+        Max_loss_usd: makeResultRow({
+            name: "MAX Loss ($)",
+            append: "$",
+            twoCol: true,
+            eval: {
+                long: "r.Premium",
+                short: "i.Strike - r.Premium"
+            }
+        }),
+
+        Initial_margin: makeResultRow({
+            name: "Initial Margin (BTC)",
+            fix: 4,
+            twoCol: true,
+            eval: {
+                long_inner: "None",
+                short: (e) =>
+                {
+                    if(e['i.Strike'].val() > e['i.Btc_entry'].val()) return "0.1500";
+                    else return "0.1000";
+                }
+            },
+            tooltip: "For Put Option seller, Initial Margin has values:<br>ITM 0.15<br>Very close to ATM Between 0.1 and 0.15<br>OTM Between 0 and 0.1"
+        })
+    };
