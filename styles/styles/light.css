@@ -69,3 +69,7 @@ background: #fff;
  .block .block-subtitle {
     font-size: 12px;
     margin-top: 20px;
+ font-weight: 900;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
