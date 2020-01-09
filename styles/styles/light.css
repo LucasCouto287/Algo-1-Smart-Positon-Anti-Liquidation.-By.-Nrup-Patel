@@ -7,3 +7,7 @@ font-size: 25px;
 
 .sidebar {
   display: block;
+ margin-bottom: 10px; }
+  .sidebar.small .nav .nav-link {
+    font-size: 16px; }
+  .sidebar .nav {
