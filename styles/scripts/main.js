@@ -2469,3 +2469,19 @@ function Puts()
     {
         enter_block.add(i[k]);
     } );
+
+    row1.appendChild( enter_block );
+    row1.appendChild( result_premium );
+
+    row2.appendChild( result_pl );
+    row2.appendChild( result_mgml );
+
+    row4.appendChild( result_be );
+
+    $.get('https://data.messari.io/api/v1/assets/btc/metrics', resp => {
+        let price = resp.data.market_data.price_usd;
+        i["Btcusd"].val( price.toFixed(0) );
+    });
+
+    tippy('[title]');
+}
