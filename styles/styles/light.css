@@ -45,3 +45,7 @@ font-weight: 700;
 transition: .3s; }
   .fa-question-circle:hover {
     opacity: 1; }
+
+
+.block {
+  color: #000000;
