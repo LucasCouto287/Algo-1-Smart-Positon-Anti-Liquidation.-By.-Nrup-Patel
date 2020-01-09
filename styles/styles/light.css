@@ -103,7 +103,11 @@ background: #fff;
       background: #ddd;
       position: absolute;
       width: calc(100% - 20px); }
-  
+  .block .input-slider .slider-btn {
+      cursor: pointer;
+      font-size: 12px;
+      padding-top: 20px;
+      position: relative; }
   
   
   
