@@ -76,3 +76,7 @@ background: #fff;
   text-align: right;
     border-bottom: 1px solid #ddd;
     font-family: 'Montserrat', sans-serif; }
+.block label {
+    display: block;
+    color: #333;
+    margin-bottom: 0; }
