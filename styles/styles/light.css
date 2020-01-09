@@ -80,3 +80,5 @@ background: #fff;
     display: block;
     color: #333;
     margin-bottom: 0; }
+.block .input-row label {
+    font-weight: bold; }
