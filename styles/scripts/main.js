@@ -2452,3 +2452,20 @@ function Puts()
             result_mgml.add(h);
         }
     } );
+
+    let h1 = document.createElement('div');
+    h1.className = 'table-row';
+    h1.style.fontSize = "12px";
+    h1.style.fontWeight = "900";
+    h1.innerHTML = `<span></span><span>Long Put</span><span>Short Put</span>`;
+    result_be.add(h1);
+
+    Object.keys(r4).map( (k) =>
+    {
+        result_be.add(r4[k]);
+    } );
+
+    Object.keys(i).map( (k) =>
+    {
+        enter_block.add(i[k]);
+    } );
