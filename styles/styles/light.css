@@ -113,7 +113,9 @@ background: #fff;
    .block .input-slider .slider-btn.active:hover:after {
         background: #ddd; }
   
-  
+    .block .input-slider .slider-btn.active:after {
+        border-color: #777;
+        background: #777; }
   
   
   
