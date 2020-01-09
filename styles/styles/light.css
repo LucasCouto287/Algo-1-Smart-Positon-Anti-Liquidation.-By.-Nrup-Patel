@@ -66,3 +66,6 @@ background: #fff;
  letter-spacing: 2px;
     text-transform: uppercase;
     font-family: 'Montserrat', sans-serif; }
+ .block .block-subtitle {
+    font-size: 12px;
+    margin-top: 20px;
