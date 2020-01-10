@@ -1,1 +1,156 @@
+.page-header .title {
+  font-weight: 700;
+font-size: 25px;
+  text-align: center;
+  font-family: 'Lato', normal, sans-serif; }
 
+
+.sidebar {
+  display: block;
+ margin-bottom: 10px; }
+  .sidebar.small .nav .nav-link {
+    font-size: 16px; }
+  .sidebar .nav {
+ justify-content: stretch;
+    flex-direction: row !important; }
+ .sidebar .nav .nav-item {
+      padding: 0 10px; }
+    .sidebar .nav .nav-link {
+ color: #000000;
+      font-size: 20px;
+      justify-content: stretch;
+font-weight: 700;
+      border-bottom: 4px solid transparent;
+      font-family: 'Karla', normal;
+  user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
+-webkit-user-select: none;
+      -webkit-touch-callout: none; }
+      .sidebar .nav .nav-link:hover {
+   color: #343a40; }
+      .sidebar .nav .nav-link:focus {
+        outline: none; }
+      .sidebar .nav .nav-link.active {
+  color: #343a40;
+        border-color:#343a40; }
+      .sidebar .nav .nav-link i {
+ font-size: 18px;
+        margin-right: 10px; }
+
+
+
+.fa-question-circle {
+  opacity: .2;
+transition: .3s; }
+  .fa-question-circle:hover {
+    opacity: 1; }
+
+
+.block {
+  color: #000000;
+ padding: 15px;
+  overflow: hidden;
+background: #fff;
+  border-radius: 00px;
+ border: 4px solid #000000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+.block .block-title {
+    color: #fff;
+ margin: -10x;
+    font-size: 15px;
+    font-weight: 900;
+ padding: 10px 15px;
+    background: #000000;
+    margin-bottom: 15px;
+ letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif; }
+ .block .block-subtitle {
+    font-size: 12px;
+    margin-top: 20px;
+ font-weight: 900;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  text-align: right;
+    border-bottom: 1px solid #ddd;
+    font-family: 'Montserrat', sans-serif; }
+.block label {
+    display: block;
+    color: #333;
+    margin-bottom: 0; }
+.block .input-row label {
+    font-weight: bold; }
+  .block .input-row + .input-row {
+    margin-top: 15px; }
+.block .input-row.select-group .select-row {
+    display: flex; }
+  .block .input-row.select-group .select-row input {
+      width: 100%; }
+.block .input-row.select-group .select-row span {
+      width: 50px;
+  .block .input-row.select-group .select-row span {
+      width: 50px;
+  .block .input-row.select-group .select-row span {
+      width: 50px;
+  
+  .block .input-slider:after {
+      left: 5px;
+      top: 14px;
+      content: '';
+      height: 3px;
+      background: #ddd;
+      position: absolute;
+      width: calc(100% - 20px); }
+  .block .input-slider .slider-btn {
+      cursor: pointer;
+      font-size: 12px;
+      padding-top: 20px;
+      position: relative; }
+   .block .input-slider .slider-btn:hover:after {
+        background: #777; }
+   .block .input-slider .slider-btn.active:hover:after {
+        background: #ddd; }
+  
+    .block .input-slider .slider-btn.active:after {
+        border-color: #777;
+        background: #777; }
+  
+   .block .input-slider .slider-btn:after {
+        top: 0;
+        left: 5%;
+        content: '';
+        width: 12px;
+        z-index: 10;
+        height: 12px;
+        transition: .3s;
+        background: rgb(0, 0, 0);
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid rgb(0, 0, 0);
+        transform: translateX(-50%); }
+  .block .input-group:last-child {
+    margin-bottom: 0; }
+   .block .input-group:hover .input-group-append .input-group-text {
+    background: #ffffff; }
+  .block .input-group .input-group-prepend .input-group-text {
+    padding: 0 5px;
+    border: none;
+    color: rgb(0, 0, 0);
+    background: none; }
+  .block .input-group .input-group-append .input-group-text {
+    border: none;
+    padding: 0 10px;
+    color: rgb(5, 5, 5);
+    cursor: pointer;
+    font-size: 10px;
+    background: none;
+    transition: .3s;
+    border-radius: .2rem 0 0 .2rem; }
+   .block .input-group .input-group-append .input-group-text + .input-group-text {
+      border-radius: 0 .2rem .2rem 0; }
+    .block .input-group .input-group-append .input-group-text:hover {
+      color: rgb(7, 6, 6); }
+  
+  
