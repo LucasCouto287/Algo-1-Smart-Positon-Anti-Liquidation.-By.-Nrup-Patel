@@ -176,3 +176,4 @@ border-color: #080806;
   display: flex;
       padding: 5px 0;
  align-items: end; }
+    .block.result .block-body span:nth-child(2), .block.result .block-body span:nth-child(3) {
