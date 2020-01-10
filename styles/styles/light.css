@@ -153,4 +153,4 @@ background: #fff;
     .block .input-group .input-group-append .input-group-text:hover {
       color: rgb(7, 6, 6); }
   .block .input-group .form-control {
-  
+   border: none;
