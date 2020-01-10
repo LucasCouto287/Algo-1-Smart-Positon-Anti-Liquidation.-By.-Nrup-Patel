@@ -160,3 +160,4 @@ background: #fff;
     .block .input-group .form-control:focus {
       border: none;
       color: rgb(10, 9, 9);
+      box-shadow: none; }
