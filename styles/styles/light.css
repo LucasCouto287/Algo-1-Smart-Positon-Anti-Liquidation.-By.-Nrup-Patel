@@ -169,3 +169,5 @@ box-shadow: 0 10px 20px rgba(88, 30, 4, 0.1); }
   .block.result {
 border-color: #080806;
     box-shadow: 0 10px 20px rgba(3, 64, 3, 0.1); }
+.block.result .block-title {
+      background: #141413; }
