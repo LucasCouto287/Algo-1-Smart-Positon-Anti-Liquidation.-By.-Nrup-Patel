@@ -173,3 +173,4 @@ border-color: #080806;
       background: #141413; }
  .block.result .block-body .table-row {
   width: 100%;
+  display: flex;
