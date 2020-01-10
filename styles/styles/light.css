@@ -158,3 +158,4 @@ background: #fff;
     background: none;
     transition: .3s; }
     .block .input-group .form-control:focus {
+      border: none;
