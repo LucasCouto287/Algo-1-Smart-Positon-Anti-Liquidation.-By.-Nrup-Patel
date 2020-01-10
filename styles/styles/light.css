@@ -197,3 +197,4 @@ border-color: #080806;
     top: 3px; }
 @media (max-width: 720px) {
   .main-row {
+    display: block; }
