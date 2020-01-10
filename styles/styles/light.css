@@ -178,3 +178,4 @@ border-color: #080806;
  align-items: end; }
     .block.result .block-body span:nth-child(2), .block.result .block-body span:nth-child(3) {
       flex-grow: 0;
+      flex-shrink: 0;
