@@ -157,3 +157,4 @@ background: #fff;
  color: rgb(6, 6, 7);
     background: none;
     transition: .3s; }
+    .block .input-group .form-control:focus {
