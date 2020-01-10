@@ -191,3 +191,4 @@ border-color: #080806;
         font-weight: bold; }
   .block .custom-control + .custom-control {
     margin-top: 3px; }
+  .block .custom-control .custom-control-input:focus ~ .custom-control-label::before {
