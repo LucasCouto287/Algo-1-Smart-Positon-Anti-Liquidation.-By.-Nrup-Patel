@@ -161,3 +161,5 @@ background: #fff;
       border: none;
       color: rgb(10, 9, 9);
       box-shadow: none; }
+ .block.block-check {
+    border-color: #0d0838;
