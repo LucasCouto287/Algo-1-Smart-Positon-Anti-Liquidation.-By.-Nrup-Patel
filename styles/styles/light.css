@@ -182,3 +182,4 @@ border-color: #080806;
       flex-basis: 80px;
       text-align: right; }
     .block.result .block-body span:first-child {
+      font-weight: bold;
