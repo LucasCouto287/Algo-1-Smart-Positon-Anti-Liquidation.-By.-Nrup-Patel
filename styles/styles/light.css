@@ -165,3 +165,5 @@ background: #fff;
     border-color: #0d0838;
 box-shadow: 0 10px 20px rgba(88, 30, 4, 0.1); }
     .block.block-check .block-title {
+   background: #030303; }
+  .block.result {
