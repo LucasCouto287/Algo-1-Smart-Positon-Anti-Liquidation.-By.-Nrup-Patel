@@ -189,3 +189,4 @@ border-color: #080806;
       .block.result span small {
         font-size: 10px;
         font-weight: bold; }
+  .block .custom-control + .custom-control {
