@@ -192,3 +192,4 @@ border-color: #080806;
   .block .custom-control + .custom-control {
     margin-top: 3px; }
   .block .custom-control .custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 5px 10px #888; }
