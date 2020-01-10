@@ -196,3 +196,4 @@ border-color: #080806;
   .block .custom-control .custom-control-label:before, .block .custom-control .custom-control-label:after {
     top: 3px; }
 @media (max-width: 720px) {
+  .main-row {
