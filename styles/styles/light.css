@@ -181,3 +181,4 @@ border-color: #080806;
       flex-shrink: 0;
       flex-basis: 80px;
       text-align: right; }
+    .block.result .block-body span:first-child {
