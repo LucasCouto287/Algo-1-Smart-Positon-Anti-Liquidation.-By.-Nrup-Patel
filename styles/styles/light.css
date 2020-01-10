@@ -198,3 +198,4 @@ border-color: #080806;
 @media (max-width: 720px) {
   .main-row {
     display: block; }
+    .main-row .col {
