@@ -152,5 +152,22 @@ background: #fff;
       border-radius: 0 .2rem .2rem 0; }
     .block .input-group .input-group-append .input-group-text:hover {
       color: rgb(7, 6, 6); }
-  
-  
+  .block .input-group .form-control {
+   border: none;
+ color: rgb(6, 6, 7);
+    background: none;
+    transition: .3s; }
+    .block .input-group .form-control:focus {
+      border: none;
+      color: rgb(10, 9, 9);
+      box-shadow: none; }
+ .block.block-check {
+    border-color: #0d0838;
+box-shadow: 0 10px 20px rgba(88, 30, 4, 0.1); }
+    .block.block-check .block-title {
+   background: #030303; }
+  .block.result {
+border-color: #080806;
+    box-shadow: 0 10px 20px rgba(3, 64, 3, 0.1); }
+.block.result .block-title {
+      background: #141413; }
